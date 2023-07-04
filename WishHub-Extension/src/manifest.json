@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "WishHub",
+  "version": "1.0.0",
+  "description": "Introducing WishHub, the browser extension that revolutionizes your online wish list experience. Save and organize all your desired products, gifts, and must-have items with ease. With WishHub, your dreams are just a click away.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "icons": {
+    "16": "assets/Placeholder.png",
+    "32": "assets/Placeholder.png",
+    "48": "assets/Placeholder.png",
+    "128": "assets/Placeholder.png"
+  },
+  "browser_action": {
+    "default_popup": "index.html"
+  }
+}

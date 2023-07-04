@@ -1,0 +1,45 @@
+:root {
+  /* font */
+  --montserrat: 'Montserrat', sans-serif;
+
+  /* colors */
+  --primary: hsl(210, 7%, 11%);
+  --secondary: hsl(217, 11%, 14%);
+  --accent: hsl(227, 63%, 62%);
+  --base: hsl(0, 0%, 97%);
+
+  /* font size */
+  --fs-900: 1.75rem;
+  --fs-800: 1.5rem;
+  --fs-600: 1.25rem;
+  --fs-500: 1.125rem;
+  --fs-400: 1rem;
+  --fs-300: .875rem;
+  --fs-200: .75rem;
+}
+
+*,
+*:after,
+*:before {
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: var(--base);
+  font-family: var(--montserrat);
+  font-size: var(--fs-400);
+  font-weight: 400;
+  outline: none;
+}
+
+html, body {
+  background-color: var(--primary);
+  width: 782px;
+  max-width: 800px;
+  height: auto;
+  min-height: 582px;
+  overflow-x: hidden;
+}
+
+
