@@ -217,3 +217,13 @@ section {
 .focused {
   fill: var(--base) !important;
 }
+
+.ng-invalid.ng-touched {
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+form.ng-invalid.ng-touched {
+  border: none;
+  color: none;
+}
