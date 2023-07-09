@@ -100,6 +100,23 @@ export class LoginComponent implements OnInit {
     return;
   };
 
+  formValidation(card: HTMLDivElement, timeBar: HTMLDivElement) {
+    this.errors = [];
+    this.errorIndex = 0;
+
+    Object.keys(this.form.controls).forEach(key => {
+      let control: any = this.form.controls[key];
+
+      if (control.errors) {
+        Object.keys(control.errors).forEach(error => {
+          this.errors.push(control.errors[error]);
+        });
+      };
+    });
+
+    this.showErrorMessage(card, timeBar);
+  }
+
   saveLogIn() {
     if (!this.form.value.remember) { return; }
 
@@ -108,30 +125,22 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('WishHub', JSON.stringify({ email: AES.encrypt(this.form.value.email, environment.encryptionKey).toString(), password: AES.encrypt(this.form.value.password, environment.encryptionKey).toString(), timestamp: Date.now() }));
   }
 
-  logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
+  async logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
     });
 
     if (this.form.valid === false) {
-      this.errors = [];
-      this.errorIndex = 0;
-
-      Object.keys(this.form.controls).forEach(key => {
-        let control: any = this.form.controls[key];
-
-        if (control.errors) {
-          Object.keys(control.errors).forEach(error => {
-            this.errors.push(control.errors[error]);
-          });
-        };
-      });
-
-      this.showErrorMessage(card, timeBar);
+      this.formValidation(card, timeBar);
       return;
     }
 
+    let data = await this.firebaseService.logInWithEmailAndPassword(this.form.value.email, this.form.value.password);
+
+    console.log(data);
+
     this.saveLogIn();
+
 
     // this.firebaseService.AddUserToDatabase('GHaFtnRL3NiUNVB2', 'andré', 'email@123.com', 'noavatar.png');
   }
