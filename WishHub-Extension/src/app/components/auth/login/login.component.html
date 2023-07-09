@@ -1,8 +1,8 @@
 <Section>
-  <form ngNativeValidate [formGroup]="form" (ngSubmit)="logIn(errorCard, timeBar)">
-    <div #errorCard class="error-card hide">
-      <p class="message"><span>Error {{errorIndex + 1}} of {{errors.length}}:</span> {{errors[errorIndex]}}</p>
-      <div #timeBar class="time-bar"></div>
+  <form ngNativeValidate [formGroup]="form" (ngSubmit)="logIn(card, timeBar)">
+    <div #card class="message-card hide">
+      <p class="message" [ngClass]="{'validMessage': !isError}"><span *ngIf="isError">Error {{messageIndex + 1}} of {{messages.length}}:</span> {{messages[messageIndex]}}</p>
+      <div #timeBar class="time-bar" [ngClass]="{'valid': !isError}"></div>
     </div>
 
     <p>WishHub</p>
@@ -20,7 +20,7 @@
           </g>
         </svg>
 
-        <p>Login</p>
+        <p>Log in</p>
       </div>
 
       <div class="box">
@@ -116,7 +116,7 @@
             d="M2288 3618 c-21 -5 -58 -28 -83 -50 -73 -64 -91 -164 -48 -253 9 -16 130 -146 271 -287 l256 -258 -942 0 c-908 0 -944 -1 -980 -19 -162 -83 -162 -299 0 -382 36 -18 72 -19 980 -19 l942 0 -256 -257 c-141 -142 -262 -271 -271 -288 -42 -87 -27 -176 43 -245 74 -75 165 -87 255 -35 61 36 921 902 939 947 20 48 20 128 0 176 -18 45 -877 911 -939 947 -48 28 -116 38 -167 23z" />
         </g>
       </svg>
-      <button type="submit">Login</button>
+      <button type="submit">Log in</button>
     </div>
 
     <div class="signUp">

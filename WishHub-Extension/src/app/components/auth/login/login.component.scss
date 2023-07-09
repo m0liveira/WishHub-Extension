@@ -13,7 +13,7 @@ section {
     height: 100%;
     padding: 5%;
 
-    .error-card {
+    .message-card {
       position: absolute;
       top: 4%;
       left: 30%;
@@ -35,6 +35,7 @@ section {
         line-height: 1.125rem;
         width: 100%;
         height: auto;
+        transition: color 150ms ease-in-out;
 
         span {
           font-size: var(--fs-200);
@@ -49,6 +50,7 @@ section {
         background: var(--error);
         width: 100%;
         height: 10%;
+        transition: background 150ms ease-in-out;
       }
     }
 
@@ -277,6 +279,14 @@ section {
 form.ng-invalid.ng-touched {
   color: transparent !important;
   border: none !important;
+}
+
+.validMessage {
+  color: var(--success) !important;
+}
+
+.valid {
+  background: var(--success) !important;
 }
 
 .slideDown {

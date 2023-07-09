@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AES, enc } from 'crypto-js';
 import { FirebaseService } from '../../../services/firebase.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -18,12 +19,13 @@ export class LoginComponent implements OnInit {
   isMailwritten: boolean = false;
   isPasswordFocused: boolean = false;
   isPasswordwritten: boolean = false;
-  errors: Array<string> = [];
-  errorIndex: number = 0;
+  isError: boolean = true;
+  messages: Array<string> = [];
+  messageIndex: number = 0;
   startAnimationTimeout: NodeJS.Timeout | undefined;
   endAnimationTimeout: NodeJS.Timeout | undefined;
 
-  constructor(public firebaseService: FirebaseService, private router: Router) { }
+  constructor(private firebaseService: FirebaseService, private userService: UserService, private router: Router) { }
 
   getSavedLogIn() {
     if (!localStorage.getItem('WishHub')) { return; }
@@ -54,7 +56,7 @@ export class LoginComponent implements OnInit {
   messageAnimation(card: HTMLDivElement, timeBar: HTMLDivElement) {
     card.classList.replace('hide', 'slideDown');
 
-    if (this.errorIndex <= this.errors.length - 1) {
+    if (this.messageIndex <= this.messages.length - 1) {
       timeBar.classList.remove('slideToLeft')
     }
 
@@ -64,7 +66,7 @@ export class LoginComponent implements OnInit {
       timeBar.classList.add('slideToLeft');
 
       this.endAnimationTimeout = setTimeout(() => {
-        if (this.errorIndex >= this.errors.length - 1) {
+        if (this.messageIndex >= this.messages.length - 1) {
           card.classList.replace('slideDown', 'slideUp');
 
           setTimeout(() => {
@@ -76,15 +78,15 @@ export class LoginComponent implements OnInit {
     }, 500);
   }
 
-  showErrorMessage(card: HTMLDivElement, timeBar: HTMLDivElement) {
-    if (this.errors.length === 1) {
+  showMessage(card: HTMLDivElement, timeBar: HTMLDivElement) {
+    if (this.messages.length === 1) {
       clearTimeout(this.startAnimationTimeout);
       clearTimeout(this.endAnimationTimeout);
       this.messageAnimation(card, timeBar);
       return;
     }
 
-    if (this.errorIndex >= this.errors.length) {
+    if (this.messageIndex >= this.messages.length) {
       clearTimeout(this.startAnimationTimeout);
       return;
     }
@@ -92,29 +94,29 @@ export class LoginComponent implements OnInit {
     this.messageAnimation(card, timeBar);
 
     this.startAnimationTimeout = setTimeout(() => {
-      this.errorIndex++;
+      this.messageIndex++;
       this.messageAnimation(card, timeBar);
-      this.showErrorMessage(card, timeBar);
+      this.showMessage(card, timeBar);
     }, 2600);
 
     return;
   };
 
   formValidation(card: HTMLDivElement, timeBar: HTMLDivElement) {
-    this.errors = [];
-    this.errorIndex = 0;
+    this.messages = [];
+    this.messageIndex = 0;
 
     Object.keys(this.form.controls).forEach(key => {
       let control: any = this.form.controls[key];
 
       if (control.errors) {
         Object.keys(control.errors).forEach(error => {
-          this.errors.push(control.errors[error]);
+          this.messages.push(control.errors[error]);
         });
       };
     });
 
-    this.showErrorMessage(card, timeBar);
+    this.showMessage(card, timeBar);
   }
 
   saveLogIn() {
@@ -137,12 +139,25 @@ export class LoginComponent implements OnInit {
 
     let data = await this.firebaseService.logInWithEmailAndPassword(this.form.value.email, this.form.value.password);
 
-    console.log(data);
+    this.messages = [];
+    this.messageIndex = 0;
 
-    this.saveLogIn();
+    if ('error' in data) {
+      this.messages.push(data.error);
+      this.showMessage(card, timeBar);
+      return;
+    }
 
+    let userInfo = { id: data.uid, displayName: data.displayName, email: data.email, avatar: data.photoURL, verified: data.emailVerified };
 
-    // this.firebaseService.AddUserToDatabase('GHaFtnRL3NiUNVB2', 'andré', 'email@123.com', 'noavatar.png');
+    data.getIdToken().then(token => {
+      this.userService.userInfo = { token, id: userInfo.id, displayName: userInfo.displayName, email: userInfo.email, avatar: userInfo.avatar, verified: userInfo.verified };
+      this.messages.push(`✔️ Logged in successfully as ${this.userService.userInfo.displayName}.`);
+      this.isError = false;
+
+      this.saveLogIn();
+      this.showMessage(card, timeBar);
+    });
   }
 
   togglePassword(input: HTMLInputElement) {
