@@ -23,11 +23,30 @@ export class LoginComponent implements OnInit {
 
   constructor(public firebaseService: FirebaseService, private router: Router) { }
 
+  getSavedLogIn() {
+    if (!localStorage.getItem('WishHub')) { return; }
+
+    let data: any = localStorage.getItem('WishHub');
+
+    let { email, password, timestamp } = JSON.parse(data);
+    let expirationTime = 7 * 24 * 60 * 60 * 1000;
+
+    if (Date.now() - timestamp > expirationTime) {
+      localStorage.removeItem('WishHub');
+      return;
+    }
+
+    this.form.patchValue({ email, password });
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       'email': new FormControl('', [Validators.email, this.noSpaceAllowed, this.noEmptyAllowed]),
       'password': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
+      'remember': new FormControl(false)
     });
+
+    this.getSavedLogIn();
   }
 
   messageAnimation(card: HTMLDivElement, timeBar: HTMLDivElement) {
@@ -79,15 +98,23 @@ export class LoginComponent implements OnInit {
     return;
   };
 
-  logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
-    this.errors = [];
-    this.errorIndex = 0;
+  saveLogIn() {
+    if (!this.form.value.remember) { return; }
 
+    if (localStorage.getItem('WishHub')) { return }
+
+    localStorage.setItem('WishHub', JSON.stringify({ email: this.form.value.email, password: this.form.value.password, timestamp: Date.now() }));
+  }
+
+  logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
     });
 
     if (this.form.valid === false) {
+      this.errors = [];
+      this.errorIndex = 0;
+
       Object.keys(this.form.controls).forEach(key => {
         let control: any = this.form.controls[key];
 
@@ -102,7 +129,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    console.log(this.form.value);
+    this.saveLogIn();
 
     // this.firebaseService.AddUserToDatabase('GHaFtnRL3NiUNVB2', 'andré', 'email@123.com', 'noavatar.png');
   }
