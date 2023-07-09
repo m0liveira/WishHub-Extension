@@ -4,6 +4,7 @@ section {
   min-height: 582px;
 
   form {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,6 +12,45 @@ section {
     width: 100%;
     height: 100%;
     padding: 5%;
+
+    .error-card {
+      position: absolute;
+      top: 4%;
+      left: 30%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--background-600);
+      border-radius: 0.3rem;
+      width: 40%;
+      height: auto;
+      min-height: 10%;
+      padding: 2%;
+      overflow: hidden;
+
+      .message {
+        color: var(--error);
+        font-size: var(--fs-200);
+        font-weight: 500;
+        line-height: 1.125rem;
+        width: 100%;
+        height: auto;
+
+        span {
+          font-size: var(--fs-200);
+          font-weight: 600;
+          margin-right: 2%;
+        }
+      }
+
+      .time-bar {
+        position: absolute;
+        top: 94%;
+        background: var(--error);
+        width: 100%;
+        height: 10%;
+      }
+    }
 
     p {
       font-size: var(--fs-800);
@@ -106,12 +146,15 @@ section {
       input {
         background: var(--surface);
         border-radius: .3rem;
+        border: 1px solid transparent;
         width: 100%;
         height: 20%;
         padding: 0 12%;
+        transition: color 200ms ease-in-out, border-color 250ms ease-in-out;
 
         &::placeholder {
           color: #8f8f8f;
+          transition: color 200ms ease-in-out;
         }
       }
 
@@ -214,16 +257,70 @@ section {
   }
 }
 
+.hide {
+  display: none !important;
+}
+
 .focused {
   fill: var(--base) !important;
 }
 
 .ng-invalid.ng-touched {
-  border: 1px solid var(--error);
-  color: var(--error);
+  color: var(--error) !important;
+  border: 1px solid var(--error) !important;
+
+  &::placeholder {
+    color: var(--error) !important;
+  }
 }
 
 form.ng-invalid.ng-touched {
-  border: none;
-  color: none;
+  color: transparent !important;
+  border: none !important;
+}
+
+.slideDown {
+  animation: slideDown .5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slideUp {
+  animation: slideUp .75s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-200%);
+    opacity: 0;
+  }
+}
+
+.slideToLeft {
+  animation: slideToLeft 2s linear both;
+}
+
+@keyframes slideToLeft {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
 }

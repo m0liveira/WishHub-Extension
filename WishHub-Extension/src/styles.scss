@@ -4,6 +4,7 @@
 
   /* colors */
   --background: hsl(0, 0%, 7%); // light: hsl(0, 0, 100%)
+  --background-600: hsl(0, 0%, 5%);
   --surface: hsl(0, 0%, 12%); // light: hsl(0, 0, 100%) with box shadow
   --surface-transparent: hsla(0, 0%, 12%, .5);
   --primary: hsl(221, 95%, 76%); // light: hsl(221, 100%, 47%)
@@ -45,8 +46,4 @@ body {
   max-width: 800px;
   height: auto;
   min-height: 582px;
-}
-
-.hide {
-  display: none !important;
 }

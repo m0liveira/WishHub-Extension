@@ -17,6 +17,9 @@ export class LoginComponent implements OnInit {
   isPasswordFocused: boolean = false;
   isPasswordwritten: boolean = false;
   errors: Array<string> = [];
+  errorIndex: number = 0;
+  startAnimationTimeout: NodeJS.Timeout | undefined;
+  endAnimationTimeout: NodeJS.Timeout | undefined;
 
   constructor(public firebaseService: FirebaseService, private router: Router) { }
 
@@ -27,8 +30,58 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  logIn() {
+  messageAnimation(card: HTMLDivElement, timeBar: HTMLDivElement) {
+    card.classList.replace('hide', 'slideDown');
+
+    if (this.errorIndex <= this.errors.length - 1) {
+      timeBar.classList.remove('slideToLeft')
+    }
+
+    clearTimeout(this.startAnimationTimeout);
+
+    this.startAnimationTimeout = setTimeout(() => {
+      timeBar.classList.add('slideToLeft');
+
+      this.endAnimationTimeout = setTimeout(() => {
+        if (this.errorIndex >= this.errors.length - 1) {
+          card.classList.replace('slideDown', 'slideUp');
+
+          setTimeout(() => {
+            card.classList.replace('slideUp', 'hide');
+            timeBar.classList.remove('slideToLeft')
+          }, 750);
+        }
+      }, 2000);
+    }, 500);
+  }
+
+  showErrorMessage(card: HTMLDivElement, timeBar: HTMLDivElement) {
+    if (this.errors.length === 1) {
+      clearTimeout(this.startAnimationTimeout);
+      clearTimeout(this.endAnimationTimeout);
+      this.messageAnimation(card, timeBar);
+      return;
+    }
+
+    if (this.errorIndex >= this.errors.length) {
+      clearTimeout(this.startAnimationTimeout);
+      return;
+    }
+
+    this.messageAnimation(card, timeBar);
+
+    this.startAnimationTimeout = setTimeout(() => {
+      this.errorIndex++;
+      this.messageAnimation(card, timeBar);
+      this.showErrorMessage(card, timeBar);
+    }, 2600);
+
+    return;
+  };
+
+  logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
     this.errors = [];
+    this.errorIndex = 0;
 
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
@@ -40,12 +93,12 @@ export class LoginComponent implements OnInit {
 
         if (control.errors) {
           Object.keys(control.errors).forEach(error => {
-            this.errors.push(control.errors[error])
+            this.errors.push(control.errors[error]);
           });
         };
       });
 
-      console.log(this.errors);
+      this.showErrorMessage(card, timeBar);
       return;
     }
 

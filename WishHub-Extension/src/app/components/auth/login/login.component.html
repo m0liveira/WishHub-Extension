@@ -1,5 +1,10 @@
 <Section>
-  <form ngNativeValidate [formGroup]="form" (ngSubmit)="logIn()">
+  <form ngNativeValidate [formGroup]="form" (ngSubmit)="logIn(errorCard, timeBar)">
+    <div #errorCard class="error-card hide">
+      <p class="message"><span>Error {{errorIndex + 1}} of {{errors.length}}:</span> {{errors[errorIndex]}}</p>
+      <div #timeBar class="time-bar"></div>
+    </div>
+
     <p>WishHub</p>
 
     <div class="sign-container">
