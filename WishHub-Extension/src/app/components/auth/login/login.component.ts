@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FirebaseService } from "../../../services/firebase.service";
+import { environment } from 'src/environments/environment';
+import { AES, enc } from 'crypto-js';
+import { FirebaseService } from '../../../services/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +38,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.form.patchValue({ email, password });
+    this.form.patchValue({ email: AES.decrypt(email, environment.encryptionKey).toString(enc.Utf8), password: AES.decrypt(password, environment.encryptionKey).toString(enc.Utf8) });
   }
 
   ngOnInit(): void {
@@ -103,7 +105,7 @@ export class LoginComponent implements OnInit {
 
     if (localStorage.getItem('WishHub')) { return }
 
-    localStorage.setItem('WishHub', JSON.stringify({ email: this.form.value.email, password: this.form.value.password, timestamp: Date.now() }));
+    localStorage.setItem('WishHub', JSON.stringify({ email: AES.encrypt(this.form.value.email, environment.encryptionKey).toString(), password: AES.encrypt(this.form.value.password, environment.encryptionKey).toString(), timestamp: Date.now() }));
   }
 
   logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
