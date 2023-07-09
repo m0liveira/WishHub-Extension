@@ -1,8 +1,9 @@
 <Section>
   <form ngNativeValidate [formGroup]="form" (ngSubmit)="logIn(card, timeBar)">
     <div #card class="message-card hide">
-      <p class="message" [ngClass]="{'validMessage': !isError}"><span *ngIf="isError">Error {{messageIndex + 1}} of {{messages.length}}:</span> {{messages[messageIndex]}}</p>
-      <div #timeBar class="time-bar" [ngClass]="{'valid': !isError}"></div>
+      <p class="message" [ngClass]="{'validMessage': messageType === 'success', 'warningMessage': messageType === 'warning'}"><span *ngIf="messageType === 'error'">Error
+          {{messageIndex + 1}} of {{messages.length}}:</span> {{messages[messageIndex]}}</p>
+      <div #timeBar class="time-bar" [ngClass]="{'valid': messageType === 'success', 'warning': messageType === 'warning'}"></div>
     </div>
 
     <p>WishHub</p>

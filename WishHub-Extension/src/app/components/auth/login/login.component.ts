@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   isMailwritten: boolean = false;
   isPasswordFocused: boolean = false;
   isPasswordwritten: boolean = false;
-  isError: boolean = true;
+  messageType: string = 'error';
   messages: Array<string> = [];
   messageIndex: number = 0;
   startAnimationTimeout: NodeJS.Timeout | undefined;
@@ -128,6 +128,8 @@ export class LoginComponent implements OnInit {
   }
 
   async logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
+    this.messageType = 'error';
+
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
     });
@@ -148,12 +150,19 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    if (!data.emailVerified) {
+      this.messages.push(`⚠️ Verify your email to activate your account.`);
+      this.messageType = 'warning';
+      this.showMessage(card, timeBar);
+      return;
+    }
+
     let userInfo = { id: data.uid, displayName: data.displayName, email: data.email, avatar: data.photoURL, verified: data.emailVerified };
 
     data.getIdToken().then(token => {
       this.userService.userInfo = { token, id: userInfo.id, displayName: userInfo.displayName, email: userInfo.email, avatar: userInfo.avatar, verified: userInfo.verified };
       this.messages.push(`✔️ Logged in successfully as ${this.userService.userInfo.displayName}.`);
-      this.isError = false;
+      this.messageType = 'success';
 
       this.saveLogIn();
       this.showMessage(card, timeBar);
