@@ -174,7 +174,6 @@ export class LoginComponent implements OnInit {
   togglePassword(input: HTMLInputElement) {
     this.isVisible = !this.isVisible;
     this.isVisible ? input.type = 'text' : input.type = 'password';
-    this.isPasswordFocused = true;
   }
 
   onInput(): void {
