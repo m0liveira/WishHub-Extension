@@ -3,10 +3,16 @@
   --montserrat: 'Montserrat', sans-serif;
 
   /* colors */
-  --primary: hsl(210, 7%, 11%);
-  --secondary: hsl(217, 11%, 14%);
-  --accent: hsl(227, 63%, 62%);
-  --base: hsl(0, 0%, 97%);
+  --background: hsl(0, 0%, 7%); // light: hsl(0, 0, 100%)
+  --background-600: hsl(0, 0%, 5%);
+  --surface: hsl(0, 0%, 12%); // light: hsl(0, 0, 100%) with box shadow
+  --surface-transparent: hsla(0, 0%, 12%, .5);
+  --primary: hsl(221, 95%, 76%); // light: hsl(221, 100%, 47%)
+  --primary-variant: hsl(221, 95%, 45%);
+  --base: hsl(0, 0%, 97%); // light: hsl(0, 0%, 7%)
+  --error: hsl(349, 52%, 61%); // light: hsl(349, 100%, 35%)
+  --warning: hsl(54, 52%, 61%); // light: hsl(54, 100%, 35%)
+  --success: hsl(101, 52%, 61%); // light: hsl(101, 100%, 35%)
 
   /* font size */
   --fs-900: 1.75rem;
@@ -31,15 +37,15 @@
   font-size: var(--fs-400);
   font-weight: 400;
   outline: none;
+  border: none;
+  user-select: none;
 }
 
-html, body {
-  background-color: var(--primary);
+html,
+body {
+  background-color: var(--background);
   width: 782px;
   max-width: 800px;
   height: auto;
   min-height: 582px;
-  overflow-x: hidden;
 }
-
-
