@@ -192,7 +192,7 @@ export class LoginComponent implements OnInit {
     }
 
     if (control.value !== null && control.value.indexOf(' ') !== -1) {
-      return { noSpaceAllowed: `Your ${controlName} can't contain spaces.` };
+      return { error: `Your ${controlName} can't contain spaces.` };
     }
 
     return null;
