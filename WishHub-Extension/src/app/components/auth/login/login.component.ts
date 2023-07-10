@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   startAnimationTimeout: NodeJS.Timeout | undefined;
   endAnimationTimeout: NodeJS.Timeout | undefined;
 
-  constructor(private firebaseService: FirebaseService, private userService: UserService, private router: Router) { }
+  constructor(private firebaseService: FirebaseService, private userService: UserService, public router: Router) { }
 
   getSavedLogIn() {
     if (!localStorage.getItem('WishHub')) { return; }
@@ -166,6 +166,8 @@ export class LoginComponent implements OnInit {
 
       this.saveLogIn();
       this.showMessage(card, timeBar);
+
+      // route to another component
     });
   }
 

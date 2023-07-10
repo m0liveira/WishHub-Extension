@@ -1,0 +1,324 @@
+section {
+  width: 100%;
+  height: 582px;
+  min-height: 582px;
+
+  form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 5%;
+
+    .message-card {
+      position: absolute;
+      top: 4%;
+      left: 30%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--background-600);
+      border-radius: 0.3rem;
+      width: 40%;
+      height: auto;
+      min-height: 10%;
+      padding: 2%;
+      overflow: hidden;
+
+      .message {
+        color: var(--error);
+        font-size: var(--fs-200);
+        font-weight: 500;
+        line-height: 1.125rem;
+        width: 100%;
+        height: auto;
+        transition: color 150ms ease-in-out;
+
+        span {
+          font-size: var(--fs-200);
+          font-weight: 600;
+          margin-right: 2%;
+        }
+      }
+
+      .time-bar {
+        position: absolute;
+        top: 94%;
+        background: var(--error);
+        width: 100%;
+        height: 10%;
+        transition: background 150ms ease-in-out;
+      }
+    }
+
+    p {
+      font-size: var(--fs-800);
+      font-weight: 600;
+    }
+
+    .sign-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 40%;
+      height: 9%;
+      margin-top: 5%;
+
+      .box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--background);
+        border-radius: 0.3rem;
+        width: 47%;
+        height: 100%;
+        cursor: pointer;
+
+        svg {
+          width: 15%;
+          height: 30%;
+
+          g {
+            fill: var(--primary);
+          }
+        }
+
+        p {
+          color: var(--primary);
+          font-size: var(--fs-300);
+          font-weight: 600;
+          margin-left: 2%;
+        }
+
+        &:nth-of-type(2) {
+          background: var(--primary);
+          cursor: default;
+
+          svg {
+            g {
+              fill: var(--background);
+            }
+          }
+
+          p {
+            color: var(--background);
+          }
+        }
+      }
+    }
+
+    .form-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      width: 55%;
+      height: 70%;
+      margin-top: 5%;
+
+      svg {
+        position: absolute;
+        top: 0.8%;
+        left: 3.5%;
+        width: 5%;
+        height: 13%;
+
+        g {
+          fill: #8f8f8f;
+          transition: fill 150ms ease-in-out;
+        }
+
+        &:nth-of-type(2) {
+          top: 23%;
+          left: 3.7%;
+          width: 4.5%;
+        }
+
+        &:nth-of-type(3) {
+          top: 45.8%;
+        }
+
+        &:nth-of-type(4) {
+          top: 85.9%;
+          left: 37%;
+
+          g {
+            fill: var(--background);
+          }
+        }
+      }
+
+      input {
+        background: var(--surface);
+        border-radius: .3rem;
+        border: 1px solid transparent;
+        width: 100%;
+        height: 14.5%;
+        padding: 0 12%;
+        transition: color 200ms ease-in-out, border-color 250ms ease-in-out;
+
+        &::placeholder {
+          color: #8f8f8f;
+          transition: color 200ms ease-in-out;
+        }
+      }
+
+      .togglePass {
+        position: absolute;
+        top: 45.2%;
+        left: 90.5%;
+        width: 6%;
+        height: 14%;
+        cursor: pointer;
+
+        svg {
+          width: 100%;
+          height: 100%;
+
+          g {
+            fill: #8f8f8f;
+            transition: fill 150ms ease-in-out;
+          }
+        }
+      }
+
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        height: 10%;
+
+        span {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex-direction: row;
+          font-size: var(--fs-200);
+          width: 100%;
+          height: 100%;
+
+
+          input {
+            accent-color: var(--primary);
+            width: 5%;
+            height: 55%;
+            margin-right: 3%;
+            cursor: pointer;
+          }
+
+          a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: var(--fs-200);
+            text-decoration: none;
+            width: 32%;
+            height: 100%;
+          }
+        }
+      }
+
+      button {
+        background: var(--primary);
+        color: var(--background);
+        border-radius: .3rem;
+        font-size: var(--fs-400);
+        font-weight: 600;
+        width: 100%;
+        height: 14.5%;
+        padding-left: 5%;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.hide {
+  display: none !important;
+}
+
+.focused {
+  fill: var(--base) !important;
+}
+
+.ng-invalid.ng-touched {
+  color: var(--error) !important;
+  border: 1px solid var(--error) !important;
+
+  &::placeholder {
+    color: var(--error) !important;
+  }
+}
+
+form.ng-invalid.ng-touched {
+  color: transparent !important;
+  border: none !important;
+}
+
+.validMessage {
+  color: var(--success) !important;
+}
+
+.valid {
+  background: var(--success) !important;
+}
+
+.warningMessage {
+  color: var(--warning) !important;
+}
+
+.warning {
+  background: var(--warning) !important;
+}
+
+.slideDown {
+  animation: slideDown .5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slideUp {
+  animation: slideUp .75s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-200%);
+    opacity: 0;
+  }
+}
+
+.slideToLeft {
+  animation: slideToLeft 2s linear both;
+}
+
+@keyframes slideToLeft {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
+}
