@@ -151,9 +151,9 @@ export class LoginComponent implements OnInit {
     }
 
     if (!data.emailVerified) {
-      this.messages.push(`⚠️ Verify your email to activate your account.`);
-      this.messageType = 'warning';
-      this.showMessage(card, timeBar);
+      this.userService.userInfo.displayName = data.displayName;
+      this.userService.userInfo.email = data.email;
+      this.router.navigateByUrl('/Verification');
       return;
     }
 
@@ -167,7 +167,7 @@ export class LoginComponent implements OnInit {
       this.saveLogIn();
       this.showMessage(card, timeBar);
 
-      // route to another component
+      // route to home component
     });
   }
 

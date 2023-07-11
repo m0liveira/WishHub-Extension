@@ -1,0 +1,32 @@
+<section>
+  <div #card id="message-card" class="message-card hide">
+    <p class="message"
+      [ngClass]="{'validMessage': messageType === 'success', 'warningMessage': messageType === 'warning'}"><span
+        *ngIf="messageType === 'error'">Error {{messageIndex + 1}} of {{messages.length}}:</span>
+      {{messages[messageIndex]}}</p>
+    <div #timeBar id="time-bar" class="time-bar"
+      [ngClass]="{'valid': messageType === 'success', 'warning': messageType === 'warning'}"></div>
+  </div>
+
+  <div class="card" *ngIf="!isMailSent">
+    <p>WishHub</p>
+
+    <p>Verify your email</p>
+
+    <p>Hi {{userService.userInfo.displayName}}! Use the link below to verify your email and start using WishHub.</p>
+
+    <button (click)="sendEmailVerification(card, timeBar)">Verify email</button>
+  </div>
+
+  <div class="card" *ngIf="isMailSent">
+    <p>WishHub</p>
+
+    <p>Verify your email</p>
+
+    <p>Email sent to {{userService.userInfo.email}}.<br>Please check your inbox to activate your account.</p>
+
+    <p>Didn't receive an email? <span (click)="sendEmailVerification(card, timeBar)">Resend email</span></p>
+
+    <a [routerLink]="'/Login'">Login</a>
+  </div>
+</section>
