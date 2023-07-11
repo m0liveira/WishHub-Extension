@@ -75,21 +75,20 @@ export class VerifyEmailComponent implements OnInit {
     return;
   };
 
-  sendEmailVerification(card: HTMLDivElement, timeBar: HTMLDivElement) {
-    this.messageType = 'error';
-
-    // send request
-
+  async sendEmailVerification(card: HTMLDivElement, timeBar: HTMLDivElement) {
     this.messages = [];
     this.messageIndex = 0;
+    this.messageType = 'error';
 
-    // if ('error' in result) {
-    //   this.messages.push(result.error);
-    //   this.showMessage(card, timeBar);
-    //   return;
-    // }
+    let result = await this.firebaseService.sendEmailValidation();
 
-    this.messages.push('✔️ Account successfully created.');
+    if (result.error !== undefined) {
+      this.messages.push(result.error);
+      this.showMessage(card, timeBar);
+      return;
+    }
+
+    this.messages.push(result.message);
     this.messageType = 'success';
     this.showMessage(card, timeBar);
 
