@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp, FirebaseError } from 'firebase/app';
 import { getDatabase, ref, set } from 'firebase/database';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, AuthErrorCodes, User } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, AuthErrorCodes } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +46,17 @@ export class FirebaseService {
     try {
       let currentUser: any = this.auth.currentUser;
       await updateProfile(currentUser, { displayName, photoURL });
+
+      return { status: 200 }
+    } catch (error) {
+      return { error: 'Something went wrong! Try again later.' }
+    }
+  }
+
+  async sendEmailValidation() {
+    try {
+      let currentUser: any = this.auth.currentUser;
+      await sendEmailVerification(currentUser);
 
       return { status: 200 }
     } catch (error) {

@@ -167,7 +167,7 @@ export class LoginComponent implements OnInit {
       this.saveLogIn();
       this.showMessage(card, timeBar);
 
-      // route to another component
+      // route to home component
     });
   }
 

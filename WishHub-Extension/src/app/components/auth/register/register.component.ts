@@ -137,6 +137,9 @@ export class RegisterComponent implements OnInit {
     this.messageType = 'success';
     this.showMessage(card, timeBar);
 
+    setTimeout(() => {
+      this.router.navigateByUrl('/Verification')
+    }, 3250);
   }
 
   togglePassword(input: HTMLInputElement) {

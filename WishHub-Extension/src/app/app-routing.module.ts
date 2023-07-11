@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { LoginComponent } from './components/auth/login/login.component';
+import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Register', component: RegisterComponent },
   { path: 'Login', component: LoginComponent },
-  // { path: 'my-component3', component: 'my-component3' },
+  { path: 'Verification', component: VerifyEmailComponent },
   { path: '**', component: LoginComponent },
 ];
 
