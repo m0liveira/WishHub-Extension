@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
       'username': new FormControl('', [this.lengthRangeAllowed, this.noEmptyAllowed, this.noSpaceOnlyAllowed, this.noConsecutiveSpacesAllowed, this.noStartNorEndSpacesAllowed]),
       'password': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
       'avatar': new FormControl(''),
-      'tos': new FormControl(false)
+      'tos': new FormControl(false, this.acceptToSValidation)
     });
   }
 
@@ -113,6 +113,22 @@ export class RegisterComponent implements OnInit {
       this.formValidation(card, timeBar);
       return;
     }
+
+    let result = await this.firebaseService.signUpWithEmailAndPassword(this.form.value.email, this.form.value.password);
+
+    this.messages = [];
+    this.messageIndex = 0;
+
+    if ('error' in result) {
+      this.messages.push(result.error);
+      this.showMessage(card, timeBar);
+      return;
+    }
+
+    this.messages.push('✔️ Account successfully created.');
+    this.messageType = 'success';
+    this.showMessage(card, timeBar);
+
   }
 
   togglePassword(input: HTMLInputElement) {
@@ -279,19 +295,6 @@ export class RegisterComponent implements OnInit {
     return null;
   }
 
-  noWeakPassword(passwordType: string): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      let parentControl: any = control.parent;
-      let controlName;
-
-      if (parentControl) { controlName = Object.keys(parentControl.controls).find(key => parentControl.controls[key] === control); }
-
-      if (control.value !== null && control.value !== '' && passwordType === 'Weak') { return { error: `Your ${controlName} is weak.` }; }
-
-      return null;
-    };
-  }
-
   noSpaceOnlyAllowed(control: AbstractControl) {
     let parentControl: any = control.parent;
     let controlName;
@@ -337,6 +340,12 @@ export class RegisterComponent implements OnInit {
     if (control.value !== null && control.value !== '' && control.value.endsWith(" ")) {
       return { error: `Your ${controlName} can't end with a space.` };
     }
+
+    return null;
+  }
+
+  acceptToSValidation(control: AbstractControl) {
+    if (control.value !== null && control.value === false) { return { error: 'You Must Agree to the Terms & Conditions.' }; }
 
     return null;
   }
