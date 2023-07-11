@@ -58,7 +58,7 @@ export class FirebaseService {
       let currentUser: any = this.auth.currentUser;
       await sendEmailVerification(currentUser);
 
-      return { status: 200 }
+      return { message: '✔️ Email sent successfully!' }
     } catch (error) {
       return { error: 'Something went wrong! Try again later.' }
     }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from '../../../services/user.service';
 import { FirebaseService } from '../../../services/firebase.service';
 
 @Component({
@@ -24,7 +25,7 @@ export class RegisterComponent implements OnInit {
   startAnimationTimeout: NodeJS.Timeout | undefined;
   endAnimationTimeout: NodeJS.Timeout | undefined;
 
-  constructor(private firebaseService: FirebaseService, public router: Router) { }
+  constructor(private userService: UserService, private firebaseService: FirebaseService, public router: Router) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -132,6 +133,9 @@ export class RegisterComponent implements OnInit {
       this.showMessage(card, timeBar);
       return;
     }
+
+    this.userService.userInfo.displayName = result.displayName;
+    this.userService.userInfo.email = result.email;
 
     this.messages.push('✔️ Account successfully created.');
     this.messageType = 'success';
