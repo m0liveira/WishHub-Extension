@@ -11,7 +11,7 @@
   --primary-variant: hsl(221, 95%, 45%);
   --base: hsl(0, 0%, 97%); // light: hsl(0, 0%, 7%)
   --error: hsl(349, 52%, 61%); // light: hsl(349, 100%, 35%)
-  --warning: hsl(54, 52%, 61%); // light: hsl(54, 100%, 35%)
+  --warning: hsl(50, 52%, 61%); // light: hsl(50, 100%, 35%)
   --success: hsl(101, 52%, 61%); // light: hsl(101, 100%, 35%)
 
   /* font size */
@@ -22,6 +22,7 @@
   --fs-400: 1rem;
   --fs-300: .875rem;
   --fs-200: .75rem;
+  --fs-100: .625rem;
 }
 
 *,

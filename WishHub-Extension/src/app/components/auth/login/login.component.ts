@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   startAnimationTimeout: NodeJS.Timeout | undefined;
   endAnimationTimeout: NodeJS.Timeout | undefined;
 
-  constructor(private firebaseService: FirebaseService, private userService: UserService, private router: Router) { }
+  constructor(private firebaseService: FirebaseService, private userService: UserService, public router: Router) { }
 
   getSavedLogIn() {
     if (!localStorage.getItem('WishHub')) { return; }
@@ -166,13 +166,14 @@ export class LoginComponent implements OnInit {
 
       this.saveLogIn();
       this.showMessage(card, timeBar);
+
+      // route to another component
     });
   }
 
   togglePassword(input: HTMLInputElement) {
     this.isVisible = !this.isVisible;
     this.isVisible ? input.type = 'text' : input.type = 'password';
-    this.isPasswordFocused = true;
   }
 
   onInput(): void {
@@ -191,7 +192,7 @@ export class LoginComponent implements OnInit {
     }
 
     if (control.value !== null && control.value.indexOf(' ') !== -1) {
-      return { noSpaceAllowed: `Your ${controlName} can't contain spaces.` };
+      return { error: `Your ${controlName} can't contain spaces.` };
     }
 
     return null;

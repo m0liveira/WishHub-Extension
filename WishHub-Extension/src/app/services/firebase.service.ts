@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp, FirebaseError } from 'firebase/app';
 import { getDatabase, ref, set } from 'firebase/database';
-import { getAuth, signInWithEmailAndPassword, AuthErrorCodes } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, AuthErrorCodes, User } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,31 @@ export class FirebaseService {
         return { error: 'Enter the correct email address and password to log in.' };
       }
 
+      return { error: 'Something went wrong! Try again later.' }
+    }
+  }
+
+  async signUpWithEmailAndPassword(email: string, password: string) {
+    try {
+      return (await createUserWithEmailAndPassword(this.auth, email, password)).user;
+    } catch (error) {
+      let firebaseError = error as FirebaseError;
+
+      if (firebaseError.code === AuthErrorCodes.EMAIL_EXISTS) {
+        return { error: 'The email address provided is already registered.' };
+      }
+
+      return { error: 'Something went wrong! Try again later.' }
+    }
+  }
+
+  async updateUserProfile(displayName: string, photoURL: string) {
+    try {
+      let currentUser: any = this.auth.currentUser;
+      await updateProfile(currentUser, { displayName, photoURL });
+
+      return { status: 200 }
+    } catch (error) {
       return { error: 'Something went wrong! Try again later.' }
     }
   }
