@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   messageIndex: number = 0;
   startAnimationTimeout: NodeJS.Timeout | undefined;
   endAnimationTimeout: NodeJS.Timeout | undefined;
+  hasRequested: boolean = false;
 
   constructor(private firebaseService: FirebaseService, private userService: UserService, public router: Router) { }
 
@@ -128,25 +129,30 @@ export class LoginComponent implements OnInit {
   }
 
   async logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
-    this.messageType = 'error';
-
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
     });
 
     if (this.form.valid === false) {
+      this.messageType = 'error';
       this.formValidation(card, timeBar);
       return;
     }
 
+    if (this.hasRequested) { return; }
+
     let data = await this.firebaseService.logInWithEmailAndPassword(this.form.value.email, this.form.value.password);
+
+    this.hasRequested = true;
 
     this.messages = [];
     this.messageIndex = 0;
 
     if ('error' in data) {
+      this.messageType = 'error';
       this.messages.push(data.error);
       this.showMessage(card, timeBar);
+      this.hasRequested = false;
       return;
     }
 

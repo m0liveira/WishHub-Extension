@@ -104,7 +104,21 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
 
-    console.log(this.form.value);
+    let result = await this.firebaseService.sendPasswordResetToEmail(this.form.value.email);
+
+    this.messages = [];
+    this.messageIndex = 0;
+
+    if (result.error !== undefined) {
+      this.messages.push(result.error);
+      this.showMessage(card, timeBar);
+      return;
+    }
+
+    this.messages.push(result.message);
+    this.messageType = 'success';
+    this.showMessage(card, timeBar);
+    this.isMailSent = true;
   }
 
   onInput(): void {

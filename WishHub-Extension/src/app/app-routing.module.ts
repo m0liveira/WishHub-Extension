@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'Register', component: RegisterComponent },
   { path: 'Login', component: LoginComponent },
   { path: 'Verification', component: VerifyEmailComponent },
-  { path: 'Reset', component: ResetPasswordComponent },
+  { path: 'Recover', component: ResetPasswordComponent },
   { path: '**', component: LoginComponent },
 ];
 
