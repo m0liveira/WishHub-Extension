@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
   isUsernamewritten: boolean = false;
   isPasswordFocused: boolean = false;
   isPasswordwritten: boolean = false;
+  hasRequested: boolean = false;
   messageType: string = 'error';
   passwordType: string = 'Weak';
   messages: Array<string> = [];
@@ -29,7 +30,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      'email': new FormControl('', [Validators.email, this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
+      'email': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
       'username': new FormControl('', [this.lengthRangeAllowed, this.noEmptyAllowed, this.noSpaceOnlyAllowed, this.noConsecutiveSpacesAllowed, this.noStartNorEndSpacesAllowed]),
       'password': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
       'avatar': new FormControl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS24JxktmF4ItMAEYHPzYuQaQlzyG5voTkR8g&usqp=CAU'),
@@ -104,33 +105,41 @@ export class RegisterComponent implements OnInit {
   }
 
   async register(card: HTMLDivElement, timeBar: HTMLDivElement) {
-    this.messageType = 'error';
 
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
     });
 
     if (this.form.valid === false) {
+      this.messageType = 'error';
       this.formValidation(card, timeBar);
       return;
     }
 
+    if (this.hasRequested) { return; }
+
     let result = await this.firebaseService.signUpWithEmailAndPassword(this.form.value.email, this.form.value.password);
+
+    this.hasRequested = true;
 
     this.messages = [];
     this.messageIndex = 0;
 
     if ('error' in result) {
+      this.messageType = 'error';
       this.messages.push(result.error);
       this.showMessage(card, timeBar);
+      this.hasRequested = false;
       return;
     }
 
     let data = await this.firebaseService.updateUserProfile(this.form.value.username, this.form.value.avatar);
 
     if (data.error !== undefined) {
+      this.messageType = 'error';
       this.messages.push(data.error);
       this.showMessage(card, timeBar);
+      this.hasRequested = false;
       return;
     }
 

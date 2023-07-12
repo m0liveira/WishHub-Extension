@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp, FirebaseError } from 'firebase/app';
 import { getDatabase, ref, set } from 'firebase/database';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, AuthErrorCodes } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, AuthErrorCodes } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +60,22 @@ export class FirebaseService {
 
       return { message: '✔️ Email sent successfully!' }
     } catch (error) {
+      return { error: 'Something went wrong! Try again later.' }
+    }
+  }
+
+  async sendPasswordResetToEmail(email: string) {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+
+      return { message: '✔️ Email sent successfully!' }
+    } catch (error) {
+      let firebaseError = error as FirebaseError;
+
+      if (firebaseError.code === AuthErrorCodes.USER_DELETED) { return { error: "The email address provided isn't registered." }; };
+
+      if (firebaseError.code === AuthErrorCodes.INVALID_EMAIL) { return { error: 'The email address provided is invalid.' }; };
+
       return { error: 'Something went wrong! Try again later.' }
     }
   }

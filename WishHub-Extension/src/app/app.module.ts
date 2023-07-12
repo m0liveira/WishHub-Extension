@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { VerifyEmailComponent } from './components/auth/verify-email/verify-emai
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
