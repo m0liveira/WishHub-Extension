@@ -1,56 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { AES, enc } from 'crypto-js';
-import { FirebaseService } from '../../../services/firebase.service';
-import { UserService } from '../../../services/user.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.scss']
 })
-
-export class LoginComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit {
   form!: FormGroup;
-  isVisible: boolean = false;
-  isMailFocused: boolean = false;
-  isMailwritten: boolean = false;
-  isPasswordFocused: boolean = false;
-  isPasswordwritten: boolean = false;
   messageType: string = 'error';
   messages: Array<string> = [];
   messageIndex: number = 0;
   startAnimationTimeout: NodeJS.Timeout | undefined;
   endAnimationTimeout: NodeJS.Timeout | undefined;
+  isMailSent: boolean = false;
+  isMailFocused: boolean = false;
+  isMailwritten: boolean = false;
 
-  constructor(private firebaseService: FirebaseService, private userService: UserService, public router: Router) { }
-
-  getSavedLogIn() {
-    if (!localStorage.getItem('WishHub')) { return; }
-
-    let data: any = localStorage.getItem('WishHub');
-
-    let { email, password, timestamp } = JSON.parse(data);
-    let expirationTime = 7 * 24 * 60 * 60 * 1000;
-
-    if (Date.now() - timestamp > expirationTime) {
-      localStorage.removeItem('WishHub');
-      return;
-    }
-
-    this.form.patchValue({ email: AES.decrypt(email, environment.encryptionKey).toString(enc.Utf8), password: AES.decrypt(password, environment.encryptionKey).toString(enc.Utf8) });
-  }
+  constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      'email': new FormControl('', [this.noSpaceAllowed, this.noEmptyAllowed]),
-      'password': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
-      'remember': new FormControl(false)
+      'email': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
     });
-
-    this.getSavedLogIn();
   }
 
   messageAnimation(card: HTMLDivElement, timeBar: HTMLDivElement) {
@@ -119,15 +92,7 @@ export class LoginComponent implements OnInit {
     this.showMessage(card, timeBar);
   }
 
-  saveLogIn() {
-    if (!this.form.value.remember) { return; }
-
-    if (localStorage.getItem('WishHub')) { return }
-
-    localStorage.setItem('WishHub', JSON.stringify({ email: AES.encrypt(this.form.value.email, environment.encryptionKey).toString(), password: AES.encrypt(this.form.value.password, environment.encryptionKey).toString(), timestamp: Date.now() }));
-  }
-
-  async logIn(card: HTMLDivElement, timeBar: HTMLDivElement) {
+  async recoverPassword(card: HTMLDivElement, timeBar: HTMLDivElement) {
     this.messageType = 'error';
 
     Object.values(this.form.controls).forEach(control => {
@@ -139,46 +104,11 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    let data = await this.firebaseService.logInWithEmailAndPassword(this.form.value.email, this.form.value.password);
-
-    this.messages = [];
-    this.messageIndex = 0;
-
-    if ('error' in data) {
-      this.messages.push(data.error);
-      this.showMessage(card, timeBar);
-      return;
-    }
-
-    if (!data.emailVerified) {
-      this.userService.userInfo.displayName = data.displayName;
-      this.userService.userInfo.email = data.email;
-      this.router.navigateByUrl('/Verification');
-      return;
-    }
-
-    let userInfo = { id: data.uid, displayName: data.displayName, email: data.email, avatar: data.photoURL, verified: data.emailVerified };
-
-    data.getIdToken().then(token => {
-      this.userService.userInfo = { token, id: userInfo.id, displayName: userInfo.displayName, email: userInfo.email, avatar: userInfo.avatar, verified: userInfo.verified };
-      this.messages.push(`✔️ Logged in successfully as ${this.userService.userInfo.displayName}.`);
-      this.messageType = 'success';
-
-      this.saveLogIn();
-      this.showMessage(card, timeBar);
-
-      // route to home component
-    });
-  }
-
-  togglePassword(input: HTMLInputElement) {
-    this.isVisible = !this.isVisible;
-    this.isVisible ? input.type = 'text' : input.type = 'password';
+    console.log(this.form.value);
   }
 
   onInput(): void {
     this.form.value.email !== '' && this.form.value.email !== null ? this.isMailwritten = true : this.isMailwritten = false;
-    this.form.value.password !== '' && this.form.value.password !== null ? this.isPasswordwritten = true : this.isPasswordwritten = false;
   }
 
   // Form validations
@@ -221,12 +151,8 @@ export class LoginComponent implements OnInit {
       controlName = Object.keys(parentControl.controls).find(key => parentControl.controls[key] === control);
     }
 
-    if (control.value !== null && control.value.length < 6) {
-      return { error: `Your ${controlName} must contain a minimum of 6 characters.` };
-    }
-
-    if (control.value !== null && control.value.length > 24) {
-      return { error: `Your ${controlName} must have less then 24 characters.` };
+    if (controlName === 'email' && control.value !== null && control.value.length > 254) {
+      return { error: `Your ${controlName} must have less then 254 characters.` };
     }
 
     return null;

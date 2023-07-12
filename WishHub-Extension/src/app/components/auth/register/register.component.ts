@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      'email': new FormControl('', [Validators.email, this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
+      'email': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
       'username': new FormControl('', [this.lengthRangeAllowed, this.noEmptyAllowed, this.noSpaceOnlyAllowed, this.noConsecutiveSpacesAllowed, this.noStartNorEndSpacesAllowed]),
       'password': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
       'avatar': new FormControl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS24JxktmF4ItMAEYHPzYuQaQlzyG5voTkR8g&usqp=CAU'),
