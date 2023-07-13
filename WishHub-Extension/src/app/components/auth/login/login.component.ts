@@ -31,6 +31,8 @@ export class LoginComponent implements OnInit {
   getSavedLogIn() {
     if (!localStorage.getItem('WishHub')) { return; }
 
+    this.form.patchValue({ 'remember': true });
+
     let data: any = localStorage.getItem('WishHub');
 
     let { email, password, timestamp } = JSON.parse(data);
@@ -50,8 +52,6 @@ export class LoginComponent implements OnInit {
       'password': new FormControl('', [this.lengthRangeAllowed, this.noSpaceAllowed, this.noEmptyAllowed]),
       'remember': new FormControl(false)
     });
-
-    // # FIXME: Remember on true if login data already saved on local storage + dont add new data and keep the same
 
     this.getSavedLogIn();
   }
@@ -123,9 +123,12 @@ export class LoginComponent implements OnInit {
   }
 
   saveLogIn() {
-    if (!this.form.value.remember) { return; }
+    if (!this.form.value.remember) {
+      localStorage.removeItem('WishHub');
+      return;
+    }
 
-    if (localStorage.getItem('WishHub')) { return }
+    if (localStorage.getItem('WishHub')) { return; }
 
     localStorage.setItem('WishHub', JSON.stringify({ email: AES.encrypt(this.form.value.email, environment.encryptionKey).toString(), password: AES.encrypt(this.form.value.password, environment.encryptionKey).toString(), timestamp: Date.now() }));
   }

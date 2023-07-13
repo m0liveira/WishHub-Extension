@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/m0liveira/WishHub-Extension">
-    <img src="WishHub-Extension/src/assets/logofull.png" alt="Logo" width="80" height="80">
+    <img src="WishHub-Extension/src/assets/logofull.png" alt="Logo" width="200" height="200">
   </a>
 
   <h3 align="center">WishHub</h3>
