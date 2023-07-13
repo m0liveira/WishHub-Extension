@@ -51,6 +51,8 @@ export class LoginComponent implements OnInit {
       'remember': new FormControl(false)
     });
 
+    // # FIXME: Remember on true if login data already saved on local storage + dont add new data and keep the same
+
     this.getSavedLogIn();
   }
 

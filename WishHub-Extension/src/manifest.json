@@ -8,10 +8,10 @@
     "storage"
   ],
   "icons": {
-    "16": "assets/Placeholder.png",
-    "32": "assets/Placeholder.png",
-    "48": "assets/Placeholder.png",
-    "128": "assets/Placeholder.png"
+    "16": "assets/logofull.png",
+    "32": "assets/logofull.png",
+    "48": "assets/logofull.png",
+    "128": "assets/logofull.png"
   },
   "browser_action": {
     "default_popup": "index.html"
