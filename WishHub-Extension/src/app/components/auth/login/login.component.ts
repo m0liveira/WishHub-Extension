@@ -124,6 +124,8 @@ export class LoginComponent implements OnInit {
 
   saveLogIn() {
     if (!this.form.value.remember) {
+      if (!localStorage.getItem('WishHub')) { return; }
+
       localStorage.removeItem('WishHub');
       return;
     }
@@ -178,7 +180,9 @@ export class LoginComponent implements OnInit {
       this.saveLogIn();
       this.showMessage(card, timeBar);
 
-      // route to home component
+      setTimeout(() => {
+        this.router.navigateByUrl('/Hub');
+      }, 3250);
     });
   }
 

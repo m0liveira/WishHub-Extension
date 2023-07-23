@@ -1,0 +1,226 @@
+section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  min-height: 582px;
+  padding: 5% 10% 10%;
+  border: 1px solid red;
+
+  p {
+    font-size: var(--fs-800);
+    font-weight: 600;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 5vh; // put at 8vh for the extension
+    margin-top: 5%;
+
+    .left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 35%;
+      height: 100%;
+
+      button {
+        background: var(--primary);
+        color: var(--background);
+        border-radius: .3rem;
+        font-size: var(--fs-400);
+        font-weight: 600;
+        width: 85%;
+        height: 100%;
+        cursor: pointer;
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 65%;
+      height: 100%;
+
+      .mode {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: 0.3rem;
+        width: 25%;
+        height: 70%;
+        cursor: pointer;
+        transition: background 150ms ease-in-out;
+
+        &:nth-of-type(2) {
+          margin: 0 5% 0 2%;
+
+          svg {
+            width: 15%;
+            height: 100%;
+
+            path {
+              fill: #8f8f8f;
+              stroke: none;
+            }
+          }
+
+          &:hover {
+            svg {
+              path {
+                fill: var(--base);
+                stroke: none;
+              }
+            }
+          }
+        }
+
+        svg {
+          width: 17%;
+          height: 100%;
+
+          path {
+            stroke: #8f8f8f;
+            transition: stroke 150ms ease-in-out, fill 150ms ease-in-out;
+          }
+        }
+
+        p {
+          color: #8f8f8f;
+          font-size: var(--fs-200);
+          font-weight: 400;
+          transition: color 150ms ease-in-out;
+        }
+
+        &:hover {
+          svg {
+            path {
+              stroke: var(--base);
+            }
+          }
+
+          p {
+            color: var(--base);
+          }
+        }
+      }
+
+      img {
+        object-fit: fill;
+        border-radius: 100rem;
+        width: 8.5%;
+        height: 70%;
+        margin-right: 3%;
+        cursor: pointer;
+      }
+
+      svg {
+        width: 8%;
+        height: 55%;
+        cursor: pointer;
+
+        path {
+          fill: #8f8f8f;
+          transition: fill 150ms ease-in-out;
+        }
+
+        &:hover {
+          path {
+            fill: var(--base);
+          }
+        }
+      }
+    }
+  }
+
+  .card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    box-shadow: 4px 4px 8px 0 var(--background-600);
+    border-radius: 0.3rem;
+    height: 10vh; // put at 15vh for the extension
+    width: 100%;
+    margin-top: 10%;
+    cursor: pointer;
+    overflow: hidden;
+
+    .left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 70%;
+      height: 100%;
+
+      img {
+        border-radius: 0 0.3rem 0.3rem 0;
+        object-fit: fill;
+        width: 23%;
+        height: 100%;
+        margin-right: 5%;
+      }
+
+      svg {
+        width: 6%;
+        height: 20%;
+        margin-right: 4.5%;
+
+        path,
+        g {
+          fill: #8f8f8f;
+        }
+      }
+
+      p {
+        color: var(--base);
+        font-size: var(--fs-500);
+        font-weight: 400;
+        transition: color 150ms ease-in-out;
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 30%;
+      height: 100%;
+      padding-right: 3%;
+
+      svg {
+        width: 15%;
+        height: 30%;
+
+        path {
+          fill: #8f8f8f;
+        }
+
+        &:nth-of-type(1) {
+          path {
+            fill: none;
+            stroke: #8f8f8f;
+
+            &:nth-of-type(1) {
+              stroke: none;
+            }
+          }
+        }
+      }
+
+      p {
+        color: var(--base);
+        font-size: var(--fs-500);
+        font-weight: 400;
+        transition: color 150ms ease-in-out;
+      }
+    }
+  }
+}
