@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp, FirebaseError } from 'firebase/app';
 import { getDatabase, ref, set } from 'firebase/database';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, AuthErrorCodes } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, fetchSignInMethodsForEmail, AuthErrorCodes } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -80,13 +80,24 @@ export class FirebaseService {
     }
   }
 
+  async userExists(email: string) {
+    try {
+      let result: boolean;
+      let response = await fetchSignInMethodsForEmail(this.auth, email);
+
+      response.length > 0 ? result = true : result = false;
+
+      return result;
+    } catch (error) {
+      return { error: 'Something went wrong! Try again later.' };
+    }
+  }
+
   // prototype
-  AddUserToDatabase(userId: string, name: string, email: string, imageUrl: string) {
+  async AddWishListToDatabase(userId: string, name: string, imageUrl: string, items: Array<any> | null, views: Array<any> | null, contributors: Array<any> | null) {
     let db = getDatabase();
-    let reference = ref(db, 'users/' + userId);
+    let reference = ref(db, 'Lists/' + name);
 
-    set(reference, { username: name, email: email, avatar: imageUrl });
+    await set(reference, { creator: userId, photo: imageUrl, name, items, views, contributors });
   };
-
-  // this.firebaseService.AddUserToDatabase('GHaFtnRL3NiUNVB2', 'andré', 'email@123.com', 'noavatar.png');
 }

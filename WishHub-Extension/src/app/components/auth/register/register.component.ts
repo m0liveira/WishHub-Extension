@@ -105,7 +105,6 @@ export class RegisterComponent implements OnInit {
   }
 
   async register(card: HTMLDivElement, timeBar: HTMLDivElement) {
-
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
     });
