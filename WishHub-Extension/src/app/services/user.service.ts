@@ -8,7 +8,7 @@ export class UserService {
     token: '',
     id: '',
     displayName: '',
-    email: '',
+    email: 'mateusamaraloliveira160302@gmail.com',
     avatar: '',
     verified: false
   };

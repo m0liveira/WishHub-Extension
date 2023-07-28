@@ -94,10 +94,10 @@ export class FirebaseService {
   }
 
   // prototype
-  async AddWishListToDatabase(userId: string, name: string, imageUrl: string, items: Array<any> | null, views: Array<any> | null, contributors: Array<any> | null) {
+  async AddWishListToDatabase(listId: string, email: string, imageUrl: string, name: string, items: Array<any>, views: Array<any>, contributors: Array<any>, code: string) {
     let db = getDatabase();
-    let reference = ref(db, 'Lists/' + name);
+    let reference = ref(db, 'Lists/' + listId);
 
-    await set(reference, { creator: userId, photo: imageUrl, name, items, views, contributors });
+    await set(reference, { creator: email, photo: imageUrl, name, items, views, contributors, code });
   };
 }

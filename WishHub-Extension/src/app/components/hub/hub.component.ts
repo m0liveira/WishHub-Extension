@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { v4 as uuidv4 } from 'uuid';
+import { SHA256 } from 'crypto-js';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-hub',
@@ -10,20 +13,15 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 export class HubComponent implements OnInit {
   form!: FormGroup;
   isGrid: boolean = false;
-  isCreating: boolean = true;
+  isCreating: boolean = false;
   isMailFocused: boolean = false;
   isMailwritten: boolean = false;
   canBeAdded: boolean = true;
-  contributors: Array<string> = [];
   notificationMessage: string = '';
-  lists: Array<any> = [
-    { photo: '../../../assets/Placeholder.png', group: false, name: 'birthday', items: 3, views: 0 },
-    { photo: '../../../assets/Placeholder.png', group: false, name: 'christmas wishlist', items: 10, views: 3 },
-    { photo: '../../../assets/Placeholder.png', group: true, name: 'random things', items: 35, views: 457 },
-    { photo: '../../../assets/Placeholder.png', group: false, name: 'i just want this', items: 125, views: 72 }
-  ];
+  contributors: Array<string> = [];
+  lists: Array<any> = [];
 
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -34,19 +32,31 @@ export class HubComponent implements OnInit {
     });
   }
 
-  openModal() {
-    this.isCreating = true;
+  generateUniqueID(name: string, photoURL: string, email: string, contributors: Array<string>): string {
+    let date = new Date().toLocaleString("pt-PT");
+    let base36Date = Date.parse(date.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$2/$1/$3')).toString(36);
+    let key = Date.now().toString(36) + base36Date;
 
-    // this.firebaseService.AddWishListToDatabase('GHaFtnRL3NiUNVB2', 'birthday', '../../../assets/Placeholder.png', [1, 2, 3], null, null);
-    // this.firebaseService.AddWishListToDatabase('asdasdasv314134v', 'christmas wishlist', '../../../assets/Placeholder.png', [1, 3], null, null);
-    // this.firebaseService.AddWishListToDatabase('GHduwhdqhguadas2', 'random things', '../../../assets/Placeholder.png', [1], [3, 5, 6], ['GHaFtnRL3NiUNVB2', 'asdasdasv314134v']);
-    // this.firebaseService.AddWishListToDatabase('123B2sadaswedasd', 'i just want this', '../../../assets/Placeholder.png', null, [1, 2], ['null', 'null2']);
+    let concatenatedString = `${key}${name}${photoURL}${email}${contributors.join('')}`;
+    let hashedString = SHA256(concatenatedString).toString();
+
+    let id = uuidv4({ random: [...hashedString].map(c => c.charCodeAt(0)) });
+
+    return id;
   }
 
-  createList() {
+  createList(notification: HTMLElement) {
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
     });
+
+    if (!this.form.valid) return;
+
+    let uniqueID = this.generateUniqueID(this.form.value.name, this.form.value.image, this.userService.userInfo.email, this.contributors);
+
+    this.firebaseService.AddWishListToDatabase(`wish_${uniqueID}`, this.userService.userInfo.email, this.form.value.image, this.form.value.name, [], [], this.contributors, uniqueID);
+
+    this.clearListCreation(notification);
   }
 
   addPhoto() {
@@ -60,6 +70,13 @@ export class HubComponent implements OnInit {
     notification.classList.remove('error');
 
     if (this.form.value.email === '') return;
+
+    if (this.form.value.email === this.userService.userInfo.email) {
+      this.notificationMessage = "Please enter friends' emails to collaborate, not your own.";
+      notification.classList.add('error');
+      notification.classList.remove('noOpacity');
+      return;
+    }
 
     this.contributors.forEach(contributor => {
       if (contributor === this.form.value.email) {
@@ -95,11 +112,9 @@ export class HubComponent implements OnInit {
         notification.classList.remove('noOpacity');
         break;
     }
-
-    console.log(this.contributors);
   }
 
-  cancelListCreation(notification: HTMLElement) {
+  clearListCreation(notification: HTMLElement) {
     this.form.reset({ name: '', url: '', image: '', email: '', });
     notification.classList.add('noOpacity');
     notification.classList.remove('success');
