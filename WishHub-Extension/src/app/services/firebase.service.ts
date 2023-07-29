@@ -126,4 +126,35 @@ export class FirebaseService {
       return false;
     }
   }
+
+  async getUserWishLists(user: string): Promise<Array<any>> {
+    try {
+      let db = getDatabase();
+      let reference = ref(db, 'Lists/');
+      let lists: Array<any> = [];
+
+      return new Promise((resolve) => {
+        onValue(reference, (snapshot) => {
+          if (!snapshot.exists() || !snapshot.hasChildren()) resolve([]);
+
+          snapshot.forEach(list => {
+            if (list.val().creator === user || (list.hasChild('contributors') && list.val().contributors.includes(user))) {
+              let wishList = list.val();
+              wishList.id = list.key;
+
+              if (!list.hasChild('items')) wishList.items = [];
+              if (!list.hasChild('views')) wishList.views = [];
+              if (!list.hasChild('contributors')) wishList.contributors = [];
+
+              lists.push(wishList);
+            }
+          });
+
+          resolve(lists);
+        });
+      });
+    } catch (error) {
+      return [];
+    }
+  }
 }

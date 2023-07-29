@@ -23,13 +23,15 @@ export class HubComponent implements OnInit {
 
   constructor(private firebaseService: FirebaseService, private userService: UserService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.form = new FormGroup({
       'name': new FormControl('', [this.lengthRangeAllowed, this.noEmptyAllowed, this.noSpaceOnlyAllowed, this.noConsecutiveSpacesAllowed, this.noStartNorEndSpacesAllowed]),
       'url': new FormControl(''),
       'image': new FormControl(''),
       'email': new FormControl(''),
     });
+
+    this.lists = await this.firebaseService.getUserWishLists(this.userService.userInfo.email);
   }
 
   generateUniqueID(name: string, photoURL: string, email: string, contributors: Array<string>): string {
