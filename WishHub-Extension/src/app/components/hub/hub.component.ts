@@ -45,16 +45,20 @@ export class HubComponent implements OnInit {
     return id;
   }
 
-  createList(notification: HTMLElement) {
+  async createList(notification: HTMLElement): Promise<void> {
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
     });
 
     if (!this.form.valid) return;
 
-    let uniqueID = this.generateUniqueID(this.form.value.name, this.form.value.image, this.userService.userInfo.email, this.contributors);
+    let uniqueID;
 
-    this.firebaseService.AddWishListToDatabase(`wish_${uniqueID}`, this.userService.userInfo.email, this.form.value.image, this.form.value.name, [], [], this.contributors, uniqueID);
+    do {
+      uniqueID = this.generateUniqueID(this.form.value.name, this.form.value.image, this.userService.userInfo.email, this.contributors);
+    } while (await this.firebaseService.isWishListsIdUnique(`wish_${uniqueID}`));
+
+    await this.firebaseService.AddWishListToDatabase(`wish_${uniqueID}`, this.userService.userInfo.email, this.form.value.image, this.form.value.name, [], [], this.contributors, uniqueID);
 
     this.clearListCreation(notification);
   }

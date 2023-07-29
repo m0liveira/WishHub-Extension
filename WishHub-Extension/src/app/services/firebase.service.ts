@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp, FirebaseError } from 'firebase/app';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, onValue } from 'firebase/database';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, fetchSignInMethodsForEmail, AuthErrorCodes } from 'firebase/auth';
 
 @Injectable({
@@ -93,11 +93,37 @@ export class FirebaseService {
     }
   }
 
-  // prototype
   async AddWishListToDatabase(listId: string, email: string, imageUrl: string, name: string, items: Array<any>, views: Array<any>, contributors: Array<any>, code: string) {
-    let db = getDatabase();
-    let reference = ref(db, 'Lists/' + listId);
+    try {
+      let db = getDatabase();
+      let reference = ref(db, 'Lists/' + listId);
 
-    await set(reference, { creator: email, photo: imageUrl, name, items, views, contributors, code });
+      await set(reference, { creator: email, photo: imageUrl, name, items, views, contributors, code });
+
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
+
+  async isWishListsIdUnique(listId: string): Promise<boolean> {
+    try {
+      let db = getDatabase();
+      let reference = ref(db, 'Lists/');
+
+      return new Promise((resolve) => {
+        onValue(reference, (snapshot) => {
+          if (!snapshot.exists() || !snapshot.hasChildren()) resolve(false);
+
+          snapshot.forEach(list => {
+            if (listId === list.key) resolve(true);
+          });
+
+          resolve(false);
+        });
+      });
+    } catch (error) {
+      return false;
+    }
+  }
 }
