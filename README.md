@@ -68,21 +68,24 @@
 - [x] User login
 - [x] Password recovery
 - [x] Keep user logged in
-- [ ] Create Wish lists
-- [ ] Create Wish groups
+- [x] Create Wish lists
+- [x] Create grouped wish lists
 - [ ] Create Wishs (private or public)
-- [ ] Retrieve Wish lists
-- [ ] Retrieve Wish groups
+- [x] Retrieve Wish lists
+- [x] Retrieve grouped wish lists
 - [ ] Retrieve Wishs
 - [ ] Update Wish lists
-- [ ] Update Wish groups
+- [ ] Update grouped wish lists (creator only)
 - [ ] Update Wishs
 - [ ] Delete Wish lists
-- [ ] Delete Wish groups
+- [ ] Delete grouped wish lists (creator only)
 - [ ] Delete Wishs
+- [x] Add images to storage
+- [ ] Remove images from storage
+- [x] Get images url
+- [ ] Leave grouped wish lists (contributors only)
 - [ ] Share Wish lists
 - [ ] Get shared Wish lists
-- [ ] Create group Wish lists (users added by email or id)
 - [ ] Buy wish
 - [ ] General settings
     - [ ] Theme changer

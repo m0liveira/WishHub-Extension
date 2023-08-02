@@ -14,20 +14,21 @@ export class HubComponent implements OnInit {
   form!: FormGroup;
   isGrid: boolean = false;
   isCreating: boolean = false;
+  isNameFocused: boolean = false;
   isMailFocused: boolean = false;
   isMailwritten: boolean = false;
   canBeAdded: boolean = true;
   notificationMessage: string = '';
   contributors: Array<string> = [];
   lists: Array<any> = [];
+  imgPreview: string | undefined = undefined;
+  file: File | undefined = undefined;
 
-  constructor(private firebaseService: FirebaseService, private userService: UserService) { }
+  constructor(private firebaseService: FirebaseService, public userService: UserService) { }
 
   async ngOnInit(): Promise<void> {
     this.form = new FormGroup({
       'name': new FormControl('', [this.lengthRangeAllowed, this.noEmptyAllowed, this.noSpaceOnlyAllowed, this.noConsecutiveSpacesAllowed, this.noStartNorEndSpacesAllowed]),
-      'url': new FormControl(''),
-      'image': new FormControl(''),
       'email': new FormControl(''),
     });
 
@@ -55,18 +56,44 @@ export class HubComponent implements OnInit {
     if (!this.form.valid) return;
 
     let uniqueID;
+    let url;
 
     do {
       uniqueID = this.generateUniqueID(this.form.value.name, this.form.value.image, this.userService.userInfo.email, this.contributors);
     } while (await this.firebaseService.isWishListsIdUnique(`wish_${uniqueID}`));
 
-    await this.firebaseService.AddWishListToDatabase(`wish_${uniqueID}`, this.userService.userInfo.email, this.form.value.image, this.form.value.name, [], [], this.contributors, uniqueID);
+    this.file ? url = await this.firebaseService.uploadFileToStorage(this.file, this.userService.userInfo.id) : url = await this.firebaseService.getImageURL('Default/wishHub.png');
+
+    await this.firebaseService.AddWishListToDatabase(`wish_${uniqueID}`, this.userService.userInfo.email, url, this.form.value.name, [], [], this.contributors, uniqueID);
+
+    this.lists = await this.firebaseService.getUserWishLists(this.userService.userInfo.email);
 
     this.clearListCreation(notification);
   }
 
-  addPhoto() {
-    this.form.patchValue({ 'url': this.form.value.image });
+  readImgFile(file: File): any {
+    let reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = (event: any) => {
+      this.imgPreview = event.target.result;
+    };
+  }
+
+  addPhoto(input: HTMLInputElement) {
+    if (input.files && input.files.length > 0) {
+      this.file = input.files[0];
+
+      this.readImgFile(this.file);
+    }
+  }
+
+  removePhoto() {
+    if (this.file === undefined) return;
+
+    this.imgPreview = undefined
+    this.file = undefined;
   }
 
   async addFriendToList(notification: HTMLElement) {
@@ -75,7 +102,12 @@ export class HubComponent implements OnInit {
     notification.classList.remove('alert');
     notification.classList.remove('error');
 
-    if (this.form.value.email === '') return;
+    if (this.form.value.email === '') {
+      this.notificationMessage = "Please enter friends' emails to collaborate.";
+      notification.classList.add('error');
+      notification.classList.remove('noOpacity');
+      return;
+    }
 
     if (this.form.value.email === this.userService.userInfo.email) {
       this.notificationMessage = "Please enter friends' emails to collaborate, not your own.";
@@ -90,7 +122,6 @@ export class HubComponent implements OnInit {
         notification.classList.add('alert');
         notification.classList.remove('noOpacity');
 
-        console.log(this.contributors);
         this.canBeAdded = false;
         return;
       }
@@ -121,7 +152,9 @@ export class HubComponent implements OnInit {
   }
 
   clearListCreation(notification: HTMLElement) {
-    this.form.reset({ name: '', url: '', image: '', email: '', });
+    this.form.reset({ name: '', email: '', });
+    this.imgPreview = undefined;
+    this.file = undefined;
     notification.classList.add('noOpacity');
     notification.classList.remove('success');
     notification.classList.remove('alert');

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp, FirebaseError } from 'firebase/app';
-import { getDatabase, ref, set, onValue } from 'firebase/database';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, fetchSignInMethodsForEmail, AuthErrorCodes } from 'firebase/auth';
+import { getDatabase, ref, set, onValue } from 'firebase/database';
+import { getStorage, ref as reference, uploadBytes, getDownloadURL } from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -155,6 +156,31 @@ export class FirebaseService {
       });
     } catch (error) {
       return [];
+    }
+  }
+
+  async getImageURL(path: string): Promise<string> {
+    try {
+      let storage = getStorage();
+      let storageRef = reference(storage, path);
+
+      return new Promise(async (resolve) => resolve(await getDownloadURL(storageRef)));
+    } catch (error) {
+      return '';
+    }
+  }
+
+  async uploadFileToStorage(file: File, uid: string): Promise<string> {
+    try {
+      let storage = getStorage();
+      let path = `Lists/${uid}/${file.name}`;
+      let storageRef = reference(storage, path);
+
+      return new Promise(async (resolve) => {
+        await uploadBytes(storageRef, file).then(async () => resolve(this.getImageURL(path)));
+      })
+    } catch (error) {
+      return this.getImageURL('Default/wishHub.png');
     }
   }
 }

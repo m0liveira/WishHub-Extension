@@ -112,7 +112,7 @@ section {
       }
 
       img {
-        object-fit: fill;
+        object-fit: cover;
         border-radius: 100rem;
         width: 8.5%;
         height: 70%;
@@ -169,7 +169,7 @@ section {
 
         img {
           border-radius: 0 0.3rem 0.3rem 0;
-          object-fit: fill;
+          object-fit: cover;
           width: 23%;
           height: 100%;
           margin-right: 5%;
@@ -184,6 +184,10 @@ section {
           g {
             fill: #8f8f8f;
           }
+        }
+
+        .group-adm {
+          height: 30%;
         }
 
         p {
@@ -242,6 +246,7 @@ section {
     height: 800px;
 
     form {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -257,13 +262,26 @@ section {
         margin-bottom: 5%;
       }
 
+      .stroke {
+        position: absolute;
+        top: 24.2%;
+        left: 16.3%;
+        width: 5%;
+        height: 5%;
+
+        path {
+          stroke: #8f8f8f;
+          transition: stroke 150ms ease-in-out;
+        }
+      }
+
       input {
         background: var(--surface);
         border-radius: .3rem;
         border: 1px solid transparent;
         width: 100%;
         height: 12%;
-        padding: 0 5%;
+        padding: 0 5% 0 12%;
         transition: color 200ms ease-in-out, border-color 250ms ease-in-out;
 
         &::placeholder {
@@ -280,6 +298,7 @@ section {
       }
 
       .container {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -287,10 +306,70 @@ section {
         height: 12%;
         margin: 10% 0 0 0;
 
+        .stroke {
+          path {
+            stroke: #8f8f8f;
+            transition: stroke 150ms ease-in-out;
+          }
+        }
+
+        img {
+          position: absolute;
+          top: 15%;
+          left: 2%;
+          object-fit: cover;
+          border-radius: .3rem;
+          width: 35px;
+          height: 35px;
+        }
+
+        .remove-image {
+          position: absolute;
+          top: 6%;
+          left: 8.5%;
+          background: var(--error);
+          border-radius: 1000rem;
+          width: 15px;
+          height: 15px;
+          opacity: 1;
+          cursor: pointer;
+
+          h4 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--base);
+            font-size: var(--fs-100);
+            font-weight: 600;
+            border-radius: 1000rem;
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .image-displayer {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          background: var(--surface);
+          border-radius: .3rem 0 0 .3rem;
+          width: 65%;
+          height: 100%;
+          padding: 0 2% 0 13%;
+
+          span {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 100%;
+            overflow: hidden;
+          }
+        }
+
         input {
           border-radius: .3rem 0 0 .3rem;
           width: 65%;
           height: 100%;
+          padding-left: 13%;
         }
 
         input[type="file"] {
@@ -398,7 +477,7 @@ section {
 }
 
 .grid {
-  justify-content: space-between !important;
+  // justify-content: space-between !important;
   flex-direction: row !important;
   flex-wrap: wrap;
 
@@ -408,6 +487,11 @@ section {
     border-radius: 0.3rem !important;
     height: 35vh !important; // put at 40vh for the extension
     width: calc(100% / 3 - 5%) !important;
+    margin-right: calc(15% / 2);
+
+    &:nth-of-type(3n){
+      margin-right: 0 !important;
+    }
 
     .left {
       flex-direction: column;
@@ -416,7 +500,7 @@ section {
 
       img {
         border-radius: 0.3rem !important;
-        object-fit: fill;
+        object-fit: cover;
         width: 100% !important;
         height: 55% !important;
         margin: 0 0 5% 0 !important;
@@ -428,7 +512,8 @@ section {
         margin: 0 2% 5% !important;
       }
 
-      .group {
+      .group,
+      .group-adm {
         width: 15% !important;
         height: 10% !important;
       }
@@ -466,6 +551,10 @@ section {
   color: var(--base) !important;
 }
 
+.placeholder {
+  color: #8f8f8f !important;
+}
+
 .hide {
   display: none !important;
 }
@@ -476,6 +565,10 @@ section {
 
 .focused {
   fill: var(--base) !important;
+}
+
+.focused2 {
+  stroke: var(--base) !important;
 }
 
 .success {
