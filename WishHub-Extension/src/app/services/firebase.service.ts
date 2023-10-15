@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { initializeApp, FirebaseError } from 'firebase/app';
-import { getDatabase, ref, set } from 'firebase/database';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, AuthErrorCodes } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, fetchSignInMethodsForEmail, AuthErrorCodes } from 'firebase/auth';
+import { getDatabase, ref, set, onValue } from 'firebase/database';
+import { getStorage, ref as reference, uploadBytes, getDownloadURL } from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -80,13 +81,106 @@ export class FirebaseService {
     }
   }
 
-  // prototype
-  AddUserToDatabase(userId: string, name: string, email: string, imageUrl: string) {
-    let db = getDatabase();
-    let reference = ref(db, 'users/' + userId);
+  async userExists(email: string) {
+    try {
+      let result: boolean;
+      let response = await fetchSignInMethodsForEmail(this.auth, email);
 
-    set(reference, { username: name, email: email, avatar: imageUrl });
+      response.length > 0 ? result = true : result = false;
+
+      return result;
+    } catch (error) {
+      return { error: 'Something went wrong! Try again later.' };
+    }
+  }
+
+  async AddWishListToDatabase(listId: string, email: string, imageUrl: string, name: string, items: Array<any>, views: Array<any>, contributors: Array<any>, code: string) {
+    try {
+      let db = getDatabase();
+      let reference = ref(db, 'Lists/' + listId);
+
+      await set(reference, { creator: email, photo: imageUrl, name, items, views, contributors, code });
+
+      return;
+    } catch (error) {
+      return error;
+    }
   };
 
-  // this.firebaseService.AddUserToDatabase('GHaFtnRL3NiUNVB2', 'andré', 'email@123.com', 'noavatar.png');
+  async isWishListsIdUnique(listId: string): Promise<boolean> {
+    try {
+      let db = getDatabase();
+      let reference = ref(db, 'Lists/');
+
+      return new Promise((resolve) => {
+        onValue(reference, (snapshot) => {
+          if (!snapshot.exists() || !snapshot.hasChildren()) resolve(false);
+
+          snapshot.forEach(list => {
+            if (listId === list.key) resolve(true);
+          });
+
+          resolve(false);
+        });
+      });
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async getUserWishLists(user: string): Promise<Array<any>> {
+    try {
+      let db = getDatabase();
+      let reference = ref(db, 'Lists/');
+      let lists: Array<any> = [];
+
+      return new Promise((resolve) => {
+        onValue(reference, (snapshot) => {
+          if (!snapshot.exists() || !snapshot.hasChildren()) resolve([]);
+
+          snapshot.forEach(list => {
+            if (list.val().creator === user || (list.hasChild('contributors') && list.val().contributors.includes(user))) {
+              let wishList = list.val();
+              wishList.id = list.key;
+
+              if (!list.hasChild('items')) wishList.items = [];
+              if (!list.hasChild('views')) wishList.views = [];
+              if (!list.hasChild('contributors')) wishList.contributors = [];
+
+              lists.push(wishList);
+            }
+          });
+
+          resolve(lists);
+        });
+      });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  async getImageURL(path: string): Promise<string> {
+    try {
+      let storage = getStorage();
+      let storageRef = reference(storage, path);
+
+      return new Promise(async (resolve) => resolve(await getDownloadURL(storageRef)));
+    } catch (error) {
+      return '';
+    }
+  }
+
+  async uploadFileToStorage(file: File, uid: string): Promise<string> {
+    try {
+      let storage = getStorage();
+      let path = `Lists/${uid}/${file.name}`;
+      let storageRef = reference(storage, path);
+
+      return new Promise(async (resolve) => {
+        await uploadBytes(storageRef, file).then(async () => resolve(this.getImageURL(path)));
+      })
+    } catch (error) {
+      return this.getImageURL('Default/wishHub.png');
+    }
+  }
 }

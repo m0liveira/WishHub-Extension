@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/m0liveira/WishHub-Extension">
-    <img src="WishHub-Extension/src/assets/logofull.png" alt="Logo" width="80" height="80">
+    <img src="WishHub-Extension/src/assets/logofull.png" alt="Logo" width="200" height="200">
   </a>
 
   <h3 align="center">WishHub</h3>
@@ -68,21 +68,24 @@
 - [x] User login
 - [x] Password recovery
 - [x] Keep user logged in
-- [ ] Create Wish lists
-- [ ] Create Wish groups
+- [x] Create Wish lists
+- [x] Create grouped wish lists
 - [ ] Create Wishs (private or public)
-- [ ] Retrieve Wish lists
-- [ ] Retrieve Wish groups
+- [x] Retrieve Wish lists
+- [x] Retrieve grouped wish lists
 - [ ] Retrieve Wishs
 - [ ] Update Wish lists
-- [ ] Update Wish groups
+- [ ] Update grouped wish lists (creator only)
 - [ ] Update Wishs
 - [ ] Delete Wish lists
-- [ ] Delete Wish groups
+- [ ] Delete grouped wish lists (creator only)
 - [ ] Delete Wishs
+- [x] Add images to storage
+- [ ] Remove images from storage
+- [x] Get images url
+- [ ] Leave grouped wish lists (contributors only)
 - [ ] Share Wish lists
 - [ ] Get shared Wish lists
-- [ ] Create group Wish lists (users added by email or id)
 - [ ] Buy wish
 - [ ] General settings
     - [ ] Theme changer

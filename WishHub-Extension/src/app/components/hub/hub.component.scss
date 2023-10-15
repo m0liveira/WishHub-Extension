@@ -1,0 +1,598 @@
+section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  min-height: 582px;
+  padding: 5% 10% 10%;
+
+  p {
+    font-size: var(--fs-800);
+    font-weight: 600;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 5vh; // put at 8vh for the extension
+    margin-top: 5%;
+
+    .left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 35%;
+      height: 100%;
+
+      button {
+        background: var(--primary);
+        color: var(--background);
+        border-radius: .3rem;
+        font-size: var(--fs-400);
+        font-weight: 600;
+        width: 85%;
+        height: 100%;
+        cursor: pointer;
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 65%;
+      height: 100%;
+
+      .mode {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: 0.3rem;
+        width: 25%;
+        height: 70%;
+        cursor: pointer;
+        transition: background 150ms ease-in-out;
+
+        &:nth-of-type(2) {
+          margin: 0 5% 0 2%;
+
+          svg {
+            width: 15%;
+            height: 100%;
+
+            path {
+              fill: #8f8f8f;
+              stroke: none;
+            }
+          }
+
+          &:hover {
+            svg {
+              path {
+                fill: var(--base);
+                stroke: none;
+              }
+            }
+          }
+        }
+
+        svg {
+          width: 17%;
+          height: 100%;
+
+          path {
+            stroke: #8f8f8f;
+            transition: stroke 150ms ease-in-out, fill 150ms ease-in-out;
+          }
+        }
+
+        p {
+          color: #8f8f8f;
+          font-size: var(--fs-200);
+          font-weight: 400;
+          transition: color 150ms ease-in-out;
+        }
+
+        &:hover {
+          svg {
+            path {
+              stroke: var(--base);
+            }
+          }
+
+          p {
+            color: var(--base);
+          }
+        }
+      }
+
+      img {
+        object-fit: cover;
+        border-radius: 100rem;
+        width: 8.5%;
+        height: 70%;
+        margin-right: 3%;
+        cursor: pointer;
+      }
+
+      svg {
+        width: 8%;
+        height: 55%;
+        cursor: pointer;
+
+        path {
+          fill: #8f8f8f;
+          transition: fill 150ms ease-in-out;
+        }
+
+        &:hover {
+          path {
+            fill: var(--base);
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+
+    .card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      box-shadow: 4px 4px 8px 0 var(--background-600);
+      border-radius: 0.3rem;
+      height: 10vh; // put at 15vh for the extension
+      width: 100%;
+      margin-top: 10%;
+      cursor: pointer;
+      overflow: hidden;
+
+      .left {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 70%;
+        height: 100%;
+
+        img {
+          border-radius: 0 0.3rem 0.3rem 0;
+          object-fit: cover;
+          width: 23%;
+          height: 100%;
+          margin-right: 5%;
+        }
+
+        svg {
+          width: 6%;
+          height: 24%;
+          margin-right: 4.5%;
+
+          path,
+          g {
+            fill: #8f8f8f;
+          }
+        }
+
+        .group-adm {
+          height: 30%;
+        }
+
+        p {
+          color: var(--base);
+          font-size: var(--fs-500);
+          font-weight: 400;
+          transition: color 150ms ease-in-out;
+        }
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 30%;
+        height: 100%;
+        padding-right: 3%;
+
+        svg {
+          width: 15%;
+          height: 30%;
+
+          path {
+            fill: #8f8f8f;
+          }
+
+          &:nth-of-type(1) {
+            path {
+              fill: none;
+              stroke: #8f8f8f;
+
+              &:nth-of-type(1) {
+                stroke: none;
+              }
+            }
+          }
+        }
+
+        p {
+          color: var(--base);
+          font-size: var(--fs-500);
+          font-weight: 400;
+          transition: color 150ms ease-in-out;
+        }
+      }
+    }
+  }
+
+  .overlay {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: hsla(0, 0%, 0%, 0.95);
+    width: 100%;
+    height: 800px;
+
+    form {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: column;
+      background: var(--background-600);
+      border-radius: .5rem;
+      width: 70%;
+      height: 70%;
+      padding: 10%;
+
+      p {
+        width: 100%;
+        margin-bottom: 5%;
+      }
+
+      .stroke {
+        position: absolute;
+        top: 24.2%;
+        left: 16.3%;
+        width: 5%;
+        height: 5%;
+
+        path {
+          stroke: #8f8f8f;
+          transition: stroke 150ms ease-in-out;
+        }
+      }
+
+      input {
+        background: var(--surface);
+        border-radius: .3rem;
+        border: 1px solid transparent;
+        width: 100%;
+        height: 12%;
+        padding: 0 5% 0 12%;
+        transition: color 200ms ease-in-out, border-color 250ms ease-in-out;
+
+        &::placeholder {
+          color: #8f8f8f;
+          transition: color 200ms ease-in-out;
+        }
+      }
+
+      h1 {
+        font-size: var(--fs-400);
+        font-weight: 500;
+        width: 100%;
+        margin: 10% 0 5% 0;
+      }
+
+      .container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        height: 12%;
+        margin: 10% 0 0 0;
+
+        .stroke {
+          path {
+            stroke: #8f8f8f;
+            transition: stroke 150ms ease-in-out;
+          }
+        }
+
+        img {
+          position: absolute;
+          top: 15%;
+          left: 2%;
+          object-fit: cover;
+          border-radius: .3rem;
+          width: 35px;
+          height: 35px;
+        }
+
+        .remove-image {
+          position: absolute;
+          top: 6%;
+          left: 8.5%;
+          background: var(--error);
+          border-radius: 1000rem;
+          width: 15px;
+          height: 15px;
+          opacity: 1;
+          cursor: pointer;
+
+          h4 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--base);
+            font-size: var(--fs-100);
+            font-weight: 600;
+            border-radius: 1000rem;
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .image-displayer {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          background: var(--surface);
+          border-radius: .3rem 0 0 .3rem;
+          width: 65%;
+          height: 100%;
+          padding: 0 2% 0 13%;
+
+          span {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 100%;
+            overflow: hidden;
+          }
+        }
+
+        input {
+          border-radius: .3rem 0 0 .3rem;
+          width: 65%;
+          height: 100%;
+          padding-left: 13%;
+        }
+
+        input[type="file"] {
+          display: none;
+        }
+
+        label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--primary-variant);
+          border-radius: 0 .3rem .3rem 0;
+          font-size: var(--fs-300);
+          font-weight: 500;
+          width: 35%;
+          height: 100%;
+          cursor: pointer;
+        }
+
+        svg {
+          position: absolute;
+          top: 0%;
+          left: 3.5%;
+          width: 6%;
+          height: 100%;
+
+          g {
+            fill: #8f8f8f;
+            transition: fill 150ms ease-in-out;
+          }
+        }
+
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--primary-variant);
+          border-radius: 0 .3rem .3rem 0;
+          font-size: var(--fs-300);
+          font-weight: 500;
+          width: 20%;
+          height: 100%;
+          margin: 0;
+          cursor: pointer;
+        }
+
+        &:nth-of-type(2) {
+          position: relative;
+          margin: 0;
+
+          input {
+            padding: 0 5% 0 12%;
+            width: 80%;
+            height: 100%;
+          }
+        }
+
+        &:nth-of-type(3) {
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: column;
+          height: 20%;
+          margin: 4% 0 0 0;
+
+          p {
+            color: transparent;
+            font-size: var(--fs-200);
+            font-weight: 400;
+            margin: 0;
+            opacity: 1;
+            transition: opacity 250ms ease-in-out, color 250ms ease-in-out;
+          }
+
+          .buttons-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 65%;
+
+            button {
+              background: var(--primary-variant);
+              color: var(--base);
+              border-radius: .3rem;
+              font-size: var(--fs-600);
+              font-weight: 500;
+              width: 65%;
+              height: 100%;
+              margin: 0;
+              cursor: pointer;
+            }
+
+            a {
+              background: transparent;
+              color: var(--error);
+              font-size: var(--fs-400);
+              border-radius: .3rem;
+              width: 20%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.grid {
+  // justify-content: space-between !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+
+  .card {
+    justify-content: space-between !important;
+    flex-direction: column;
+    border-radius: 0.3rem !important;
+    height: 35vh !important; // put at 40vh for the extension
+    width: calc(100% / 3 - 5%) !important;
+    margin-right: calc(15% / 2);
+
+    &:nth-of-type(3n){
+      margin-right: 0 !important;
+    }
+
+    .left {
+      flex-direction: column;
+      width: 100% !important;
+      height: 85% !important;
+
+      img {
+        border-radius: 0.3rem !important;
+        object-fit: cover;
+        width: 100% !important;
+        height: 55% !important;
+        margin: 0 0 5% 0 !important;
+      }
+
+      svg {
+        width: 11% !important;
+        height: 10% !important;
+        margin: 0 2% 5% !important;
+      }
+
+      .group,
+      .group-adm {
+        width: 15% !important;
+        height: 10% !important;
+      }
+
+      p {
+        text-align: center;
+        width: 100%;
+        height: auto;
+        max-height: 25%;
+        padding: 0 5%;
+        overflow: hidden;
+      }
+    }
+
+    .right {
+      width: 100% !important;
+      height: 15% !important;
+      padding: 0 2% 2% !important;
+
+      svg {
+        width: 15% !important;
+        height: 50% !important;
+      }
+    }
+  }
+}
+
+.listActive {
+  stroke: var(--base) !important;
+  color: var(--base) !important;
+}
+
+.gridActive {
+  fill: var(--base) !important;
+  color: var(--base) !important;
+}
+
+.placeholder {
+  color: #8f8f8f !important;
+}
+
+.hide {
+  display: none !important;
+}
+
+.noOpacity {
+  opacity: 0 !important;
+}
+
+.focused {
+  fill: var(--base) !important;
+}
+
+.focused2 {
+  stroke: var(--base) !important;
+}
+
+.success {
+  color: var(--success) !important;
+}
+
+.alert {
+  color: var(--warning) !important;
+}
+
+.error {
+  color: var(--error) !important;
+}
+
+.ng-invalid.ng-touched {
+  color: var(--error) !important;
+  border: 1px solid var(--error) !important;
+
+  &::placeholder {
+    color: var(--error) !important;
+  }
+}
+
+form.ng-invalid.ng-touched {
+  color: transparent !important;
+  border: none !important;
+}

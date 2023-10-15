@@ -6,9 +6,9 @@ import { Injectable } from '@angular/core';
 export class UserService {
   userInfo: any = {
     token: '',
-    id: '',
+    id: 'j5aRS5r9z0UsJTOWbU571iTJpuH2',
     displayName: '',
-    email: '',
+    email: 'mateusamaraloliveira160302@gmail.com',
     avatar: '',
     verified: false
   };

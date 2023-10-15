@@ -11,6 +11,8 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { LoginComponent } from './components/auth/login/login.component';
 import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { HubComponent } from './components/hub/hub.component';
+import { WishComponent } from './components/wish/wish.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { ResetPasswordComponent } from './components/auth/reset-password/reset-p
     RegisterComponent,
     LoginComponent,
     VerifyEmailComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    HubComponent,
+    WishComponent
   ],
   imports: [
     BrowserModule,
