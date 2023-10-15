@@ -12,6 +12,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { HubComponent } from './components/hub/hub.component';
+import { WishComponent } from './components/wish/wish.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { HubComponent } from './components/hub/hub.component';
     LoginComponent,
     VerifyEmailComponent,
     ResetPasswordComponent,
-    HubComponent
+    HubComponent,
+    WishComponent
   ],
   imports: [
     BrowserModule,

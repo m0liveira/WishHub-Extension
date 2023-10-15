@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { SHA256 } from 'crypto-js';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UserService } from 'src/app/services/user.service';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-hub',
@@ -24,7 +26,7 @@ export class HubComponent implements OnInit {
   imgPreview: string | undefined = undefined;
   file: File | undefined = undefined;
 
-  constructor(private firebaseService: FirebaseService, public userService: UserService) { }
+  constructor(private firebaseService: FirebaseService, public userService: UserService, public dataService: DataService, public router: Router) { }
 
   async ngOnInit(): Promise<void> {
     this.form = new FormGroup({
@@ -171,6 +173,12 @@ export class HubComponent implements OnInit {
     notification.classList.remove('success');
     notification.classList.remove('alert');
     notification.classList.remove('error');
+  }
+
+  GoToList(list: any) {
+    this.dataService.wishList = list;
+
+    this.router.navigate(['Wish', this.dataService.wishList.code]);
   }
 
   // Form validations

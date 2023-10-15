@@ -101,9 +101,9 @@ export class FirebaseService {
 
       await set(reference, { creator: email, photo: imageUrl, name, items, views, contributors, code });
 
-      return true;
+      return;
     } catch (error) {
-      return false;
+      return error;
     }
   };
 

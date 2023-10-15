@@ -5,6 +5,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { HubComponent } from './components/hub/hub.component';
+import { WishComponent } from './components/wish/wish.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'Verification', component: VerifyEmailComponent },
   { path: 'Recover', component: ResetPasswordComponent },
   { path: 'Hub', component: HubComponent },
+  { path: 'Wish/:code', component: WishComponent },
   { path: '**', component: LoginComponent },
 ];
 

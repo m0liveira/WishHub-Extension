@@ -47,7 +47,7 @@
   </div>
 
   <div class="content" [ngClass]="{'grid': isGrid}">
-    <div class="card" *ngFor="let list of lists">
+    <div class="card" *ngFor="let list of lists" (click)="GoToList(list)">
       <div class="left">
         <img src="{{list.photo}}" alt="list photo">
 
@@ -137,13 +137,13 @@
           xmlns="http://www.w3.org/2000/svg" *ngIf="!this.imgPreview">
           <path
             d="M6 36C6 19.4314 19.4314 6 36 6H126C142.568 6 156 19.4314 156 36V126C156 142.568 142.568 156 126 156H36C19.4314 156 6 142.568 6 126V36Z"
-            stroke="black" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+            stroke="black" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
           <path
             d="M54.75 73.5C65.1053 73.5 73.5 65.1053 73.5 54.75C73.5 44.3947 65.1053 36 54.75 36C44.3947 36 36 44.3947 36 54.75C36 65.1053 44.3947 73.5 54.75 73.5Z"
-            stroke="black" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+            stroke="black" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
           <path
             d="M99.9465 85.6583L36 156H128.031C143.478 156 156 143.478 156 128.031C156 124.532 154.688 121.16 152.324 118.581L122.103 85.6125C116.141 79.1093 105.882 79.1303 99.9465 85.6583Z"
-            stroke="black" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+            stroke="black" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
 
         <div class="remove-image" [ngClass]="{'noOpacity': this.imgPreview === undefined}" (click)="removePhoto()">
@@ -160,7 +160,7 @@
           Upload image
         </label>
 
-        <input #upload id="file-upload" type="file" name="img" accept="image/*" (change)="addPhoto(upload)">
+        <input #upload id="file-upload" type="file" accept="image/*" max="2000000" (change)="addPhoto(upload)">
       </div>
 
       <h1>Add friends' emails to collaborate to this list</h1>
